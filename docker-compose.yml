@@ -1,0 +1,62 @@
+services:
+  db:
+    image: postgres:13
+    container_name: DB_1
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: yourdbname
+      POSTGRES_USER: youruser
+      POSTGRES_PASSWORD: yourpassword
+    ports:
+      - "5433:5432"
+
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j_1
+    environment:
+      - NEO4J_AUTH=neo4j/testpassword
+      - NEO4JLABS_PLUGINS=["apoc"]
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      - neo4j_import:/import
+      - neo4j_plugins:/plugins
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant_1
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    environment:
+      QDRANT__SERVICE__GRPC_PORT: 6334
+      QDRANT__STORAGE__PATH: /qdrant/storage
+      QDRANT__SERVICE__HTTP_PORT: 6333
+
+  hasura:
+    image: hasura/graphql-engine:latest
+    container_name: hasura_1
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://youruser:yourpassword@db:5432/yourdbname
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_ADMIN_SECRET: youradminsecret
+      HASURA_GRAPHQL_JWT_SECRET: '{"type": "HS256", "key": "yourjwtsecraaaaaaaaaaaaaaaaaaaaaaaddsasasasasasasasasasasaassaet"}'
+
+volumes:
+  postgres_data:
+  neo4j_data:
+  neo4j_logs:
+  neo4j_import:
+  neo4j_plugins:
+  qdrant_data:
