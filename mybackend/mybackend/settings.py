@@ -11,6 +11,38 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from django.urls import re_path
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+# Swagger documentation settings
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Basic': {
+            'type': 'basic'
+        },
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'USE_SESSION_AUTH': True,  # Enable session auth
+    'LOGIN_URL': '/admin/login/',  # Use Django admin login instead
+    'LOGOUT_URL': '/admin/logout/',  # Use Django admin logout instead
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +71,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'rest_framework',
+    'drf_yasg',
+    'dashboard',
+    'tailwind',
 ]
 
 MIDDLEWARE = [
@@ -82,7 +117,7 @@ DATABASES = {
         'USER': 'youruser',
         'PASSWORD': 'yourpassword',
         'HOST': 'localhost',  # Use your database server's IP or hostname
-        'PORT': '5433',  # Default PostgreSQL port
+        'PORT': '5432',  # Default PostgreSQL port
     }
 }
 

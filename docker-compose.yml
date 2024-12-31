@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: youruser
       POSTGRES_PASSWORD: yourpassword
     ports:
-      - "5433:5432"
+      - "5432:5432"
 
   neo4j:
     image: neo4j:latest
