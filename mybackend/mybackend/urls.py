@@ -23,6 +23,14 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework.authentication import BasicAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from django.contrib import admin
+from django.urls import path
+from core.views import HasuraTokenObtainPairView
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+    TokenVerifyView,
+)
+
 
 
 
@@ -44,8 +52,13 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    # Authentication urls
+    path('api/token/', HasuraTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+
     # Your other URL patterns
-    path('api/', include(('api.urls','api'),'api')),
+    path('', include(('api.urls','api'),'api')),
 
     # Swagger UI URLs
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),

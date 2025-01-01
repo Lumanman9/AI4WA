@@ -64,3 +64,16 @@ class UserViewSet(viewsets.ModelViewSet):
 def protected_view(request):
     # Your view logic here
     pass
+
+# Authentication
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def protected_view(request):
+    return Response({
+        "message": "This is a protected view",
+        "user": str(request.user)
+    })
