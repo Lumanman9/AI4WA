@@ -47,11 +47,16 @@ services:
       - "8080:8080"
     depends_on:
       - db
+    volumes:
+      - ./hasura/:/hasura/
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://youruser:yourpassword@db:5432/yourdbname
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ADMIN_SECRET: youradminsecret
       HASURA_GRAPHQL_JWT_SECRET: '{"type": "HS256", "key": "yourjwtsecraaaaaaaaaaaaaaaaaaaaaaaddsasasasasasasasasasasaassaet"}'
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+      HASURA_GRAPHQL_CORS_DOMAIN: "http://localhost:3000"
 
 volumes:
   postgres_data:

@@ -1,0 +1,10 @@
+# hasura/config.yaml
+HASURA_GRAPHQL_JWT_SECRET: {
+    "type": "HS256",
+    "key": "yourjwtsecraaaaaaaaaaaaaaaaaaaaaaaddsasasasasasasasasasasaassaet",  # Must match Django's SIGNING_KEY
+    "claims_namespace": "https://hasura.io/jwt/claims",
+    "claims_format": "json"
+}
+
+HASURA_GRAPHQL_ADMIN_SECRET: "your-admin-secret"
+HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "anonymous"

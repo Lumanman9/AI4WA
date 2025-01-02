@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import Crime
+from rest_framework.authtoken.models import Token
 
+admin.site.register(Token)
 
 # Register your models here.
 
